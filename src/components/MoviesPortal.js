@@ -43,6 +43,14 @@ function MoviesPortal() {
         }
     };
 
+    const jumpToFirstPage = () => {
+        setCurrentPage(1);
+    };
+
+    const jumpToLastPage = () => {
+        setCurrentPage(Math.ceil(movies.length / 10));
+    };
+
     // once submit, update the inputText in input box
     // then update enteredInputText with inputText and present
     return (
@@ -94,13 +102,19 @@ function MoviesPortal() {
             <MovieDetail key={movie.imdbID} movie={movie} />
         ))}
 
-        <div className="pagination-buttons">
+        <div className="pagination-buttons d-flex justify-content-center align-items-center mt-3">
+            <button onClick={jumpToFirstPage} className="btn btn-secondary" disabled={currentPage === 1}>
+                First Page
+            </button>
             <button onClick={prevPage} className="btn btn-secondary" disabled={currentPage === 1}>
                 Previous
             </button>
             <span className="text-light mx-2">Page {currentPage} of {Math.ceil(movies.length / 10)}</span>
             <button onClick={nextPage} className="btn btn-secondary" disabled={currentPage === Math.ceil(movies.length / 10)}>
                 Next
+            </button>
+            <button onClick={jumpToLastPage} className="btn btn-secondary" disabled={currentPage === Math.ceil(movies.length / 10)}>
+                Last Page
             </button>
         </div>
 
