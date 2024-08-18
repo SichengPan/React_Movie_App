@@ -98,7 +98,7 @@ function MoviesPortal() {
         {error && <ErrorAlert error={error} searchTerm={enteredInputText}/>}
         {movies.length > 0 &&  <p className='text-light'>Showing {movies.length} Movies for '{enteredInputText}'</p>}
         {/*{movies.map((movie) => (*/}
-        {currentMovies.map((movie) => (
+        {currentMovies && currentMovies.length > 0 && currentMovies.map((movie) => (
             <MovieDetail key={movie.imdbID} movie={movie} />
         ))}
 
