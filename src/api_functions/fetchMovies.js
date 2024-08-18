@@ -67,7 +67,7 @@ const fetchMovieDetails = async (id, errorCallback) => {
     Return according to API call results, using async because there's an await api call
     */
     try {
-        const response = await fetch(`http://www.omdbapi.com/?i=${id}&plot=full&apikey=8f80b26a`);
+        const response = await fetch(`https://www.omdbapi.com/?i=${id}&plot=full&apikey=8f80b26a`);
         const data = await response.json();
 
         if (data.Response === 'True') 
