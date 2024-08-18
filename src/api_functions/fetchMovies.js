@@ -20,7 +20,7 @@ export const fetchMovies = async (searchText, moviesCallback, errorCallback, fin
             //console.log(`Fetching page ${page}`);
 
             // Use the fetch function to call the OMDB API, retrieving a list of movies
-            const response = await fetch(`http://www.omdbapi.com/?s=${searchText}&apikey=8f80b26a&type=movie&page=${page}`);
+            const response = await fetch(`https://www.omdbapi.com/?s=${searchText}&apikey=8f80b26a&type=movie&page=${page}`);
             const data = await response.json();
 
             //console.log("API response:", data);
