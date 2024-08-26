@@ -3,17 +3,17 @@ import { fetchContentByType } from "../api_functions/fetchContentByType.js";
 import ErrorAlert from "./ErrorAlert.js";
 import MovieDetail from "./MovieDetail.js";
 
-function MoviesPortal() {
+function EpisodePortal() {
     // Define two state variables:
     // 1. inputText: stores the content entered by the user in the input box in real time
     // 2. enteredInputText: stores the final input content when the user submits the form
     const [inputText, setInputText] = useState("");
     const [enteredInputText, setEnteredInputText] = useState("");
     const [movies, setMovies] = useState([]);
-    const [error, setError] = useState(null);
-    const [resultsPerPage, setResultsPerPage] = useState(10);
+    const [error, setError] = useState(false);
+    const [season, setSeason] = useState(1); // Default to season 1
     const [currentPage, setCurrentPage] = useState(1); // current page is page 1
-    const type = "movie";
+    const type = "episode";
 
     // Function called when submitting the form:
     // e.preventDefault() prevents the default form submission behavior (avoids page refresh)
@@ -24,7 +24,7 @@ function MoviesPortal() {
         // Back to page 1
         setCurrentPage(1);
         // use '()=>' so it will not be implemented directly but operated when doing finallyCallback
-        fetchContentByType(inputText, setMovies, setError, ()=>setEnteredInputText(inputText), resultsPerPage, type);
+        fetchContentByType(inputText, setMovies, setError, ()=>setEnteredInputText(inputText), season, type);
     };
 
     // Calculate the index of the first and last movie on the current page
@@ -72,12 +72,12 @@ function MoviesPortal() {
                 <form onSubmit={handleSubmit}> {/* call handleSubmit once the form submits */}
                     <div className="row g-3">
                     <div className="col-md-1 text-white fw-bold text-center" style={{ fontSize: '1.5rem', lineHeight: '1.2' }}>
-                        Search Movies
+                        Search Episodes
                     </div>
                     <div className="col-md-9">
                     <input
                         type="text"
-                        placeholder="Search for Movies"
+                        placeholder="Search Episode by Series Name and Season Number"
                         className="form-control form-control-lg"
                         value={inputText} // The value of the input box is bound to the searchInputText state
                         onChange={(e) => setInputText(e.target.value)} // Update searchInputText when the content of the input box changes
@@ -86,19 +86,14 @@ function MoviesPortal() {
                     <div className="col-md-1">
                         <select
                             className="form-select form-select-lg" 
-                            value={resultsPerPage}
-                            onChange={(e) => setResultsPerPage(Number(e.target.value))}
+                            value={season}
+                            onChange={(e) => setSeason(Number(e.target.value))}
                         >
-                            <option value={10}>10 Movies</option>
-                            <option value={20}>20 Movies</option>
-                            <option value={30}>30 Movies</option>
-                            <option value={40}>40 Movies</option>
-                            <option value={50}>50 Movies</option>
-                            <option value={60}>60 Movies</option>
-                            <option value={70}>70 Movies</option>
-                            <option value={80}>80 Movies</option>
-                            <option value={90}>90 Movies</option>
-                            <option value={100}>100 Movies</option>
+                            {[...Array(20).keys()].map((num) => (
+                                <option key={num + 1} value={num + 1}>
+                                    Season {num + 1}
+                                </option>
+                            ))}
                         </select>
                     </div>
                     <div className="col-md-1">
@@ -108,11 +103,10 @@ function MoviesPortal() {
                 </form>
             </div>
         </div>
-        
-        <br/>
+
         {/* "A && B" --> if A is true then do B */}
         {error && <ErrorAlert error={error} searchTerm={enteredInputText}/>}
-        {movies.length > 0 &&  <p className='text-light'>Showing {movies.length} Movies for '{enteredInputText}'</p>}
+        {movies.length > 0 &&  <p className='text-light'>Showing {movies.length} Episodes for '{enteredInputText}'</p>}
         {/*{movies.map((movie) => (*/}
         {currentMovies && currentMovies.length > 0 && currentMovies.map((movie) => (
             <MovieDetail key={movie.imdbID} movie={movie} />
@@ -145,23 +139,4 @@ function MoviesPortal() {
     );
 }
 
-export default MoviesPortal;
-
-/*
-    About why const is used instead of let:
-
-    1. const ensures that variable references remain unchanged:
-    - Variables declared with const cannot be reassigned, for example:
-    searchInputText = "new value"; // This is not allowed
-    - The const here ensures that the references of searchInputText and setSearchInputText are fixed and will not be accidentally reassigned.
-
-    2. State updates are done through functions provided by React:
-    - In React, state updates are done through functions such as setSearchInputText() and setEnteredSearchText().
-    - These updates do not change the references of state variables, but the values ​​they store.
-
-    3. const does not affect state updates:
-    - Using const does not mean that the state cannot be updated. It just ensures that the reference (not the value) of the variable is immutable.
-    - In React, using const is in line with best practices because the reference of state variables is usually unchanged during the life cycle of the component.
-
-    In summary, using const can prevent unexpected errors and ensure that the code is more stable and safe.
-*/
+export default EpisodePortal;
