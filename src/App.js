@@ -7,6 +7,9 @@ import MoviesPortal from "./components/MoviesPortal";
 import SeriesPortal from "./components/SeriesPortal";
 import EpisodePortal from "./components/EpisodePortal";
 
+import SearchShowScount from './components/SearchShowScount';
+import MovieDetailPage from './components/MovieDetailPage';
+
 function App() {
   
   return (
@@ -23,6 +26,11 @@ function App() {
             <Route path="/movies" element={<MoviesPortal />} />
             <Route path="/series" element={<SeriesPortal />} />
             <Route path="/episodes" element={<EpisodePortal />} />
+
+          {/*
+            <Route path="/search" element={<SearchShowScount />} />
+            <Route path="/movie/:imdbID" element={<MovieDetailPage />} />
+          */}
           </Routes>
         </div>
       </div>

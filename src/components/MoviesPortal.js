@@ -1,7 +1,11 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { fetchContentByType } from "../api_functions/fetchContentByType.js";
 import ErrorAlert from "./ErrorAlert.js";
 import MovieDetail from "./MovieDetail.js";
+
+// Font Awesome Library
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faFilm } from '@fortawesome/free-solid-svg-icons';
 
 function MoviesPortal() {
     // Define two state variables:
@@ -14,6 +18,20 @@ function MoviesPortal() {
     const [resultsPerPage, setResultsPerPage] = useState(10);
     const [currentPage, setCurrentPage] = useState(1); // current page is page 1
     const type = "movie";
+
+    // Dynamically load Font Awesome script
+    useEffect(() => {
+        const script = document.createElement('script');
+        script.src = "https://kit.fontawesome.com/d5635d350d.js";
+        script.crossOrigin = "anonymous";
+        script.async = true;
+        document.body.appendChild(script);
+
+        // Clean up the script when the component is unmounted
+        return () => {
+            document.body.removeChild(script);
+        };
+    }, []);
 
     // Function called when submitting the form:
     // e.preventDefault() prevents the default form submission behavior (avoids page refresh)
@@ -52,6 +70,8 @@ function MoviesPortal() {
         setCurrentPage(Math.ceil(movies.length / 10));
     };
 
+    
+
     // once submit, update the inputText in input box
     // then update enteredInputText with inputText and present
     return (
@@ -70,53 +90,70 @@ function MoviesPortal() {
         <div className="row mb-4">
             <div className="col-md-12">
                 <form onSubmit={handleSubmit}> {/* call handleSubmit once the form submits */}
-                    <div className="row g-3">
-                    <div className="col-md-1 text-white fw-bold text-center" style={{ fontSize: '1.5rem', lineHeight: '1.2' }}>
-                        Search Movies
+                    <div className="row">
+                        <div className="col-md-1"></div>
+                        <div className="col-md-10">
+                            <div className="text-white fw-bold mb-3" style={{ fontSize: '2.5rem', lineHeight: '2' }}>
+                                Search for Movies
+                            </div>
+                        </div>
+                        <div className="col-md-1"></div>
                     </div>
-                    <div className="col-md-9">
-                    <input
-                        type="text"
-                        placeholder="Search for Movies"
-                        className="form-control form-control-lg"
-                        value={inputText} // The value of the input box is bound to the searchInputText state
-                        onChange={(e) => setInputText(e.target.value)} // Update searchInputText when the content of the input box changes
-                    />
+
+                    <div className="row justify-content-center">
+                    <div className="col-md-1"></div>
+                    <div className="col-md-10">
+                        <div className="input-group">
+                            <select
+                                className="form-select form-select-lg rounded-start"
+                                value={resultsPerPage}
+                                onChange={(e) => setResultsPerPage(Number(e.target.value))}
+                                style={{ maxWidth: '120px' }}
+                            >
+                                <option value={10}>10 Movies</option>
+                                <option value={20}>20 Movies</option>
+                                <option value={30}>30 Movies</option>
+                                <option value={40}>40 Movies</option>
+                                <option value={50}>50 Movies</option>
+                                <option value={60}>60 Movies</option>
+                                <option value={70}>70 Movies</option>
+                                <option value={80}>80 Movies</option>
+                                <option value={90}>90 Movies</option>
+                                <option value={100}>100 Movies</option>
+                            </select>
+
+                            <input
+                                type="text"
+                                placeholder="Type in movie names ..."
+                                className="form-control form-control-lg"
+                                value={inputText}
+                                onChange={(e) => setInputText(e.target.value)}
+                            />
+
+                            <button type="submit" className="btn btn-light btn-lg rounded-end">
+                                <i className="bi bi-search"></i>
+                            </button>
+                        </div>
                     </div>
-                    <div className="col-md-1">
-                        <select
-                            className="form-select form-select-lg" 
-                            value={resultsPerPage}
-                            onChange={(e) => setResultsPerPage(Number(e.target.value))}
-                        >
-                            <option value={10}>10 Movies</option>
-                            <option value={20}>20 Movies</option>
-                            <option value={30}>30 Movies</option>
-                            <option value={40}>40 Movies</option>
-                            <option value={50}>50 Movies</option>
-                            <option value={60}>60 Movies</option>
-                            <option value={70}>70 Movies</option>
-                            <option value={80}>80 Movies</option>
-                            <option value={90}>90 Movies</option>
-                            <option value={100}>100 Movies</option>
-                        </select>
-                    </div>
-                    <div className="col-md-1">
-                        <button type="submit" className="btn btn-primary btn-lg">Search</button>
-                    </div>
+                    <div className="col-md-1"></div>
                     </div>
                 </form>
             </div>
         </div>
         
         <br/>
-        {/* "A && B" --> if A is true then do B */}
-        {error && <ErrorAlert error={error} searchTerm={enteredInputText}/>}
-        {movies.length > 0 &&  <p className='text-light'>Showing {movies.length} Movies for '{enteredInputText}'</p>}
-        {/*{movies.map((movie) => (*/}
-        {currentMovies && currentMovies.length > 0 && currentMovies.map((movie) => (
-            <MovieDetail key={movie.imdbID} movie={movie} />
-        ))}
+
+        <div className="row justify-content-center">
+            <div className="col-md-10">
+            {/* "A && B" --> if A is true then do B */}
+            {error && <ErrorAlert error={error} searchTerm={enteredInputText}/>}
+            {movies.length > 0 &&  <p className='text-light'>Showing {movies.length} Movies for '{enteredInputText}'</p>}
+            {/*{movies.map((movie) => (*/}
+            {currentMovies && currentMovies.length > 0 && currentMovies.map((movie) => (
+                <MovieDetail key={movie.imdbID} movie={movie} />
+            ))}
+            </div>
+        </div>
 
         {!error && movies.length > 0 && (
         <div className="pagination-buttons d-flex justify-content-center align-items-center mt-4">
@@ -133,6 +170,15 @@ function MoviesPortal() {
             <button onClick={jumpToLastPage} className="btn btn-secondary ms-2" disabled={currentPage === Math.ceil(movies.length / 10)}>
                 Last Page
             </button>
+        </div>
+        )}
+
+        <br/><br/><br/><br/>
+
+        {!error && movies.length === 0 && (
+        <div className="text-center text-white fw-bold start-exploring">
+            <i className="fa-solid fa-film fa-8x mb-4"></i><br/>
+            <span style={{ fontSize: '3rem' }}>Start Exploring!</span>
         </div>
         )}
 

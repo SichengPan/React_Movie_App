@@ -92,7 +92,7 @@ export const fetchContentByType = async (searchText, moviesCallback, errorCallba
     }
 };
 
-const fetchMovieDetails = async (id, errorCallback) => {
+export const fetchMovieDetails = async (id, errorCallback) => {
     /*
     Asynchronous function that search a movie by its id
     Return according to API call results, using async because there's an await api call
@@ -116,7 +116,7 @@ const fetchMovieDetails = async (id, errorCallback) => {
     }
 };
 
-const fetchEpisodeDetails = async (id, errorCallback) => {
+export const fetchEpisodeDetails = async (id, errorCallback) => {
     try {
         const response = await fetch(`https://www.omdbapi.com/?i=${id}&apikey=8f80b26a`);
         const data = await response.json();
