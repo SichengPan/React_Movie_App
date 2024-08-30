@@ -106,7 +106,7 @@ function EpisodePortal() {
                             />
 
                             <button type="submit" className="btn btn-light btn-lg rounded-end">
-                                <i className="bi bi-search"></i>
+                                <i className="fa-solid fa-magnifying-glass"></i>
                             </button>
                         </div>
                     </div>
@@ -143,6 +143,7 @@ function EpisodePortal() {
             <button onClick={jumpToLastPage} className="btn btn-secondary ms-2" disabled={currentPage === Math.ceil(movies.length / 10)}>
                 Last Page
             </button>
+            <br/><br/><br/><br/><br/>
         </div>
         )}
 

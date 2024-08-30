@@ -1,21 +1,18 @@
 import React, { useState, useEffect } from 'react';
-import { searchMoviesAndSeries } from '../api_functions/searchMoviesAndSeries.js';
-import ErrorAlert from './ErrorAlert';
 import { useNavigate } from 'react-router-dom';
 import { addToWatchList, removeFromWatchList } from '../watchlist_functions/WatchListOperations.js';
-
+import { searchEpisodesAndSeries } from '../api_functions/searchEpisodesAndSeries.js';
+import ErrorAlert from './ErrorAlert';
 import defaultPoster from '../pics/blank-movie-poster1.jpg';
 
-
-const SearchShowScount = () => {
+const SearchEpisodePortal = () => {
     const [searchText, setSearchText] = useState('');
-    const [searchType, setSearchType] = useState('all'); // 'all', 'movie', or 'series'
-    const [movies, setMovies] = useState([]);
+    const [season, setSeason] = useState(1);
+    const [episodes, setEpisodes] = useState([]);
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
     const [watchList, setWatchList] = useState(() => {
-        // get all info in watchlist from local storage
         const storedWatchList = {};
         Object.keys(localStorage).forEach(key => {
             storedWatchList[key] = true;
@@ -25,23 +22,23 @@ const SearchShowScount = () => {
 
     // Pagination state
     const [currentPage, setCurrentPage] = useState(1);
-    const moviesPerPage = 12; // 12 movies each page
+    const episodesPerPage = 12;
 
     const handleSearch = async (e) => {
         e.preventDefault();
         if (searchText.trim() === '') {
-            setError('Please enter a movie or TV show name.');
+            setError('Please enter a series name.');
             return;
         }
 
         setLoading(true);
         setError(null); // Reset error before new search
-        setMovies([]);  // Reset movies list before new search
+        setEpisodes([]);  // Reset episodes list before new search
 
-        await searchMoviesAndSeries(
+        await searchEpisodesAndSeries(
             searchText,
-            searchType,
-            setMovies,
+            season,
+            setEpisodes,
             setError
         );
 
@@ -84,34 +81,39 @@ const SearchShowScount = () => {
                 existingScript.parentNode.removeChild(existingScript);
             }
         };
-    }, []);
+    }, []);     
 
     const handleCardClick = (imdbID) => {
-        navigate(`/content/${imdbID}`);  // guide to a specific movie page
+        navigate(`/content/${imdbID}`);  // guide to a specific episode page
     };
 
-    const handleWatchListToggle = (movie) => {
-        const isAdded = watchList[movie.imdbID];
+    const handleWatchListToggle = (episode) => {
+        const isAdded = watchList[episode.imdbID];
         if (isAdded) {
-            removeFromWatchList(movie.imdbID);
+            removeFromWatchList(episode.imdbID);
         } else {
-            addToWatchList(movie);
+            addToWatchList(episode);
         }
         setWatchList((prev) => ({
             ...prev,
-            [movie.imdbID]: !isAdded
+            [episode.imdbID]: !isAdded
         }));
     };
 
+    const handleCloseError = () => {
+        setError(null);  // Clear the error
+        window.location.reload();  // Refresh the page to return to the original state
+    };
+
     // Pagination functions
-    const indexOfLastMovie = currentPage * moviesPerPage;
-    const indexOfFirstMovie = indexOfLastMovie - moviesPerPage;
-    const currentMovies = movies.slice(indexOfFirstMovie, indexOfLastMovie);
+    const indexOfLastEpisode = currentPage * episodesPerPage;
+    const indexOfFirstEpisode = indexOfLastEpisode - episodesPerPage;
+    const currentEpisodes = episodes.slice(indexOfFirstEpisode, indexOfLastEpisode);
 
     const nextPage = () => setCurrentPage((prevPage) => prevPage + 1);
     const prevPage = () => setCurrentPage((prevPage) => prevPage - 1);
     const jumpToFirstPage = () => setCurrentPage(1);
-    const jumpToLastPage = () => setCurrentPage(Math.ceil(movies.length / moviesPerPage));
+    const jumpToLastPage = () => setCurrentPage(Math.ceil(episodes.length / episodesPerPage));
 
     return (
         <div className="container-fluid min-vh-100 d-flex flex-column justify-content-between p-0">
@@ -119,9 +121,9 @@ const SearchShowScount = () => {
                 <div className="row justify-content-center">
                     <div className="col-md-8 d-flex justify-content-between align-items-center">
                         <div className="text-white fw-bold mb-3 text-start" style={{ fontSize: '3rem', lineHeight: '2' }}>
-                            Search for Movies and TV Shows
+                            Search for Episodes
                         </div>
-                        <div className="ml-auto"> {/* Watchlist on the right */}
+                        <div className="ml-auto">
                             <a href="/watchlist" className="text-light">Watchlist</a> 
                         </div>
                     </div>
@@ -132,18 +134,20 @@ const SearchShowScount = () => {
                         <div className="input-group">
                             <select
                                 className="form-select form-select-lg rounded-start"
-                                value={searchType}
-                                onChange={(e) => setSearchType(e.target.value)}
+                                value={season}
+                                onChange={(e) => setSeason(Number(e.target.value))}
                                 style={{ maxWidth: '160px' }}
                             >
-                                <option value="all">Search All</option>
-                                <option value="movie">Search Movies</option>
-                                <option value="series">Search TV Series</option>
+                                {[...Array(20).keys()].map((num) => (
+                                    <option key={num + 1} value={num + 1}>
+                                        Season {num + 1}
+                                    </option>
+                                ))}
                             </select>
 
                             <input
                                 type="text"
-                                placeholder="Type in movie or TV show name ..."
+                                placeholder="Type in series name ..."
                                 className="form-control form-control-lg"
                                 value={searchText}
                                 onChange={(e) => setSearchText(e.target.value)}
@@ -159,19 +163,19 @@ const SearchShowScount = () => {
 
             <div className="container-fluid text-center flex-grow-1 d-flex align-items-center justify-content-center" style={{ backgroundColor: '#f5f5f5' }}>
                 <div className="row justify-content-center w-100">
-                    {error && <ErrorAlert error={error} searchTerm={searchText} />}
+                    {error && <ErrorAlert error={error} searchTerm={searchText} onClose={handleCloseError} />}
                     {loading ? (
                         <div>Loading...</div>
                     ) : (
-                        movies.length > 0 ? (
+                        episodes.length > 0 ? (
                             <div className="col-md-8">
                                 <br></br>
                                 <div className="row">
-                                    {currentMovies.map((movie, index) => (
+                                    {currentEpisodes.map((episode, index) => (
                                         <div 
                                             key={index} 
                                             className="col-lg-3 col-md-4 col-6 mb-4"
-                                            onClick={() => handleCardClick(movie.imdbID)}  // Here we handle the card click
+                                            onClick={() => handleCardClick(episode.imdbID)}  
                                             style={{ cursor: 'pointer' }}
                                         >
                                             <div 
@@ -183,52 +187,50 @@ const SearchShowScount = () => {
                                                 }}
                                             >
                                                 <div className="fav-poster" style={{ padding: '10px 0 5px 0' }}>
-                                                <img 
-                                                    src={movie.Poster && movie.Poster !== 'N/A' ? movie.Poster : defaultPoster}
-                                                    className="card-img-top" 
-                                                    alt={movie.Title} 
-                                                    style={{ 
-                                                        width: '95%', 
-                                                        height: 'auto',
-                                                        borderRadius: '4px', 
-                                                        margin: '0 auto'
-                                                    }}
-                                                    onError={(e) => { 
-                                                        e.target.onerror = null; // prevent no-stop cycles
-                                                        e.target.src = defaultPoster;
-                                                    }} 
-                                                />
+                                                    <img 
+                                                        src={episode.Poster && episode.Poster !== 'N/A' ? episode.Poster : defaultPoster}
+                                                        className="card-img-top" 
+                                                        alt={episode.Title} 
+                                                        style={{ 
+                                                            width: '95%', 
+                                                            height: 'auto',
+                                                            borderRadius: '4px', 
+                                                            margin: '0 auto'
+                                                        }}
+                                                        onError={(e) => { 
+                                                            e.target.onerror = null; // prevent no-stop cycles
+                                                            e.target.src = defaultPoster;
+                                                        }} 
+                                                    />
                                                 </div>
                                                 <div 
                                                     className="card-body d-flex" 
                                                     style={{ padding: '5px 10px', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'flex-start' }}
-                                                > {/* justify top */}
+                                                >
                                                     <div style={{ display: 'flex', alignItems: 'flex-start', width: '100%' }}>
                                                         <h6 className="card-title" style={{ fontSize: '18px', margin: 0, flex: '1', textAlign: 'left', fontWeight: 'bold', color: 'black' }}>
-                                                            {movie.Title}
+                                                            {episode.Title}
                                                         </h6>
                                                         <button 
-                                                            className={`btn btn-sm ms-2 ${watchList[movie.imdbID] ? 'btn-secondary' : 'btn-outline-secondary'}`}
+                                                            className={`btn btn-sm ms-2 ${watchList[episode.imdbID] ? 'btn-secondary' : 'btn-outline-secondary'}`}
                                                             style={{ alignSelf: 'flex-start' }} 
                                                             onClick={(e) => {
-                                                                e.stopPropagation(); // prevent default card click
-                                                                handleWatchListToggle(movie);
+                                                                e.stopPropagation(); 
+                                                                handleWatchListToggle(episode);
                                                             }}
                                                         >
-                                                            <i className={`fa-solid fa-bookmark ${watchList[movie.imdbID] ? 'text-light' : ''}`}></i>
+                                                            <i className={`fa-solid fa-bookmark ${watchList[episode.imdbID] ? 'text-light' : ''}`}></i>
                                                         </button>
                                                     </div>
                                                 </div>
                                                 <div className="card-footer d-flex justify-content-start" style={{ padding: '5px 10px' }}>
-                                                    <span style={{ fontSize: '16px' }}>{movie.Year}</span>
+                                                    <span style={{ fontSize: '16px' }}>{episode.Year}</span>
                                                 </div>
                                             </div>
-
                                         </div>
                                     ))}
                                 </div>
 
-                                {/* Pagination Controls */}
                                 <div className="pagination-buttons d-flex justify-content-center align-items-center mt-4">
                                     <button onClick={jumpToFirstPage} className="btn btn-secondary me-2" disabled={currentPage === 1}>
                                         First Page
@@ -236,11 +238,11 @@ const SearchShowScount = () => {
                                     <button onClick={prevPage} className="btn btn-secondary me-2" disabled={currentPage === 1}>
                                         Previous
                                     </button>
-                                    <span className="text-dark mx-2">Page {currentPage} of {Math.ceil(movies.length / moviesPerPage)}</span>
-                                    <button onClick={nextPage} className="btn btn-secondary ms-2" disabled={currentPage === Math.ceil(movies.length / moviesPerPage)}>
+                                    <span className="text-dark mx-2">Page {currentPage} of {Math.ceil(episodes.length / episodesPerPage)}</span>
+                                    <button onClick={nextPage} className="btn btn-secondary ms-2" disabled={currentPage === Math.ceil(episodes.length / episodesPerPage)}>
                                         Next
                                     </button>
-                                    <button onClick={jumpToLastPage} className="btn btn-secondary ms-2" disabled={currentPage === Math.ceil(movies.length / moviesPerPage)}>
+                                    <button onClick={jumpToLastPage} className="btn btn-secondary ms-2" disabled={currentPage === Math.ceil(episodes.length / episodesPerPage)}>
                                         Last Page
                                     </button>
                                     <br/><br/><br/><br/>
@@ -259,4 +261,4 @@ const SearchShowScount = () => {
     );
 };
 
-export default SearchShowScount;
+export default SearchEpisodePortal;

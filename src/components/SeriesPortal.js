@@ -111,7 +111,7 @@ function SeriesPortal() {
                             />
 
                             <button type="submit" className="btn btn-light btn-lg rounded-end">
-                                <i className="bi bi-search"></i>
+                                <i className="fa-solid fa-magnifying-glass"></i>
                             </button>
                         </div>
                     </div>
