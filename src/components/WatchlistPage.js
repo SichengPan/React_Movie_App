@@ -4,10 +4,10 @@ import { displayWatchList } from '../watchlist_functions/WatchListOperations.js'
 
 
 const WatchlistPage = () => {
-    const navigate = useNavigate(); // 初始化 navigate 函数
+    const navigate = useNavigate();
 
     useEffect(() => {
-        // 调用 displayWatchList 函数并传递 navigate 来显示收藏的电影列表
+        // Call the displayWatchList function and pass navigate to display the favorite movie list
         displayWatchList(navigate);
     }, [navigate]);
 
@@ -44,6 +44,10 @@ const WatchlistPage = () => {
                     <div className="col-md-8">
                         <div className="row fav-container d-flex align-items-start"> 
                             {/* Cards will be rendered here */}
+                        </div>
+
+                        <div className="pagination-container mt-4">
+                            {/* Pagination buttons will be rendered here */}
                         </div>
                         <br/>
                     </div>

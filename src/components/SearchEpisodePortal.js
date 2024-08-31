@@ -116,7 +116,7 @@ const SearchEpisodePortal = () => {
 
     return (
         <div className="container-fluid min-vh-100 d-flex flex-column justify-content-between p-0">
-            <div className="container-fluid text-center py-5" style={{ background: 'linear-gradient(135deg, #2d3e50 30%, #1b1b1b 100%)' }}>
+            <div className="container-fluid text-center py-5" style={{ background: 'linear-gradient(135deg, #2d3e50 30%, #1b1b1b 100%)', padding: '20px' }}>
                 <div className="row justify-content-center">
                     <div className="col-md-8 d-flex justify-content-between align-items-center">
                         <div className="text-white fw-bold mb-3 text-start" style={{ fontSize: '3rem', lineHeight: '2' }}>

@@ -18,9 +18,13 @@ export function removeFromWatchList(imdbID) {
 }
 
 // Display all movies in watchList
-export const displayWatchList = (navigate) => {
+export const displayWatchList = (navigate, currentPage = 1, itemsPerPage = 12) => {
     const container = document.querySelector('.fav-container');
-    container.innerHTML = ''; // 清空容器
+    container.innerHTML = '';
+
+    // get Page Number
+    const totalItems = localStorage.length;
+    const totalPages = Math.ceil(totalItems / itemsPerPage);
 
     // show prompts if it is empty
     if (localStorage.length === 0) {
@@ -38,8 +42,13 @@ export const displayWatchList = (navigate) => {
         return;
     }
 
-    // 获取所有收藏的电影
-    for (let i = 0; i < localStorage.length; i++) {
+    // start index and end index (converted from page)
+    const startIndex = (currentPage - 1) * itemsPerPage;
+    const endIndex = Math.min(startIndex + itemsPerPage, totalItems);
+
+
+    // get content of current page
+    for (let i = startIndex; i < endIndex; i++) {
         const key = localStorage.key(i);
         const movie = JSON.parse(localStorage.getItem(key));
 
@@ -102,5 +111,34 @@ export const displayWatchList = (navigate) => {
         });
 
         container.appendChild(movieCard);
+
+        // pagination
+        const paginationContainer = document.querySelector('.pagination-container');
+        paginationContainer.innerHTML = '';
+
+        const paginationHTML = `
+            <div class="pagination-buttons d-flex justify-content-center align-items-center mt-4">
+                <button ${currentPage === 1 ? 'disabled' : ''} class="btn btn-secondary me-2" id="firstPage">First Page</button>
+                <button ${currentPage === 1 ? 'disabled' : ''} class="btn btn-secondary me-2" id="prevPage">Previous</button>
+                <span class="text-dark mx-2">Page ${currentPage} of ${totalPages}</span>
+                <button ${currentPage === totalPages ? 'disabled' : ''} class="btn btn-secondary ms-2" id="nextPage">Next</button>
+                <button ${currentPage === totalPages ? 'disabled' : ''} class="btn btn-secondary ms-2" id="lastPage">Last Page</button>
+            </div>
+        `;
+
+        paginationContainer.innerHTML = paginationHTML;
+
+        document.getElementById('firstPage').addEventListener('click', () => {
+            displayWatchList(navigate, 1, itemsPerPage);
+        });
+        document.getElementById('prevPage').addEventListener('click', () => {
+            displayWatchList(navigate, currentPage - 1, itemsPerPage);
+        });
+        document.getElementById('nextPage').addEventListener('click', () => {
+            displayWatchList(navigate, currentPage + 1, itemsPerPage);
+        });
+        document.getElementById('lastPage').addEventListener('click', () => {
+            displayWatchList(navigate, totalPages, itemsPerPage);
+        });
     }
 }

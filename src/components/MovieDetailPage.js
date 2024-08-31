@@ -80,8 +80,8 @@ const MovieDetailPage = () => {
                             className={`btn btn-sm ms-2 ${watchList[movie.imdbID] ? 'btn-secondary' : 'btn-outline-secondary'}`}
                             style={{ alignSelf: 'flex-start' }} 
                             onClick={(e) => {
-                            e.stopPropagation(); // prevent default card click
-                            handleWatchListToggle(movie);
+                                e.stopPropagation(); // prevent default card click
+                                handleWatchListToggle(movie);
                             }}
                         >
                             <i className={`fa-solid fa-bookmark ${watchList[movie.imdbID] ? 'text-light' : ''}`}></i>
