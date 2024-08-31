@@ -58,7 +58,7 @@ export const displayWatchList = (navigate) => {
                 </div>
                 <div class="card-body d-flex" style="padding: 5px 10px; flex-direction: row; justify-content: space-between; align-items: flex-start;">
                     <div style="display: flex; align-items: flex-start; width: 100%;">
-                        <h6 class="card-title" style="font-size: 18px; margin: 0; flex: 1; text-align: left;">${movie.Title}</h6>
+                        <h6 class="card-title" style="font-size: 18px; margin: 0; flex: 1; text-align: left; font-weight: bold;">${movie.Title}</h6>
                     </div>
                 </div>
                 <div class="card-footer d-flex justify-content-start" style="padding: 5px 10px;">

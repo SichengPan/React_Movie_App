@@ -100,9 +100,8 @@ const SearchEpisodePortal = () => {
         }));
     };
 
-    const handleCloseError = () => {
-        setError(null);  // Clear the error
-        window.location.reload();  // Refresh the page to return to the original state
+    const handleErrorAlertClose = () => {
+        setError(null); 
     };
 
     // Pagination functions
@@ -133,6 +132,8 @@ const SearchEpisodePortal = () => {
                     <div className="col-md-8">
                         <div className="input-group">
                             <select
+                                id="searchType"
+                                name="searchType"
                                 className="form-select form-select-lg rounded-start"
                                 value={season}
                                 onChange={(e) => setSeason(Number(e.target.value))}
@@ -146,6 +147,7 @@ const SearchEpisodePortal = () => {
                             </select>
 
                             <input
+                                id="searchText"
                                 type="text"
                                 placeholder="Type in series name ..."
                                 className="form-control form-control-lg"
@@ -160,10 +162,18 @@ const SearchEpisodePortal = () => {
                     </div>
                 </form>
             </div>
+            
+            {/* ErrorAlert aligned to top */}
+            {error && (
+                <div className="container-fluid text-center d-flex justify-content-center align-items-start" style={{ backgroundColor: '#f5f5f5' }}>
+                    <div className="row justify-content-center w-100">
+                        <ErrorAlert error={error} searchTerm={searchText} onClose={handleErrorAlertClose} />
+                    </div>
+                </div>
+            )}
 
             <div className="container-fluid text-center flex-grow-1 d-flex align-items-center justify-content-center" style={{ backgroundColor: '#f5f5f5' }}>
                 <div className="row justify-content-center w-100">
-                    {error && <ErrorAlert error={error} searchTerm={searchText} onClose={handleCloseError} />}
                     {loading ? (
                         <div>Loading...</div>
                     ) : (
@@ -179,7 +189,7 @@ const SearchEpisodePortal = () => {
                                             style={{ cursor: 'pointer' }}
                                         >
                                             <div 
-                                                className="card bg-light h-100" 
+                                                className="card bg-light" 
                                                 style={{ 
                                                     width: '100%', 
                                                     boxShadow: '1px 2px #a1a1a1', 

@@ -48,6 +48,10 @@ const SearchShowScount = () => {
         setLoading(false);
     };
 
+    const handleErrorAlertClose = () => {
+        setError(null);  
+    };
+
     // Dynamically load Font Awesome script
     useEffect(() => {
         const scriptUrl = "https://kit.fontawesome.com/d5635d350d.js";
@@ -156,10 +160,19 @@ const SearchShowScount = () => {
                     </div>
                 </form>
             </div>
+            
+            {/* ErrorAlert aligned to top */}
+            {error && (
+                <div className="container-fluid text-center d-flex justify-content-center align-items-start" style={{ backgroundColor: '#f5f5f5' }}>
+                    <div className="row justify-content-center w-100">
+                        <ErrorAlert error={error} searchTerm={searchText} onClose={handleErrorAlertClose} />
+                    </div>
+                </div>
+            )}
 
+            {/* Main content centered */}
             <div className="container-fluid text-center flex-grow-1 d-flex align-items-center justify-content-center" style={{ backgroundColor: '#f5f5f5' }}>
                 <div className="row justify-content-center w-100">
-                    {error && <ErrorAlert error={error} searchTerm={searchText} />}
                     {loading ? (
                         <div>Loading...</div>
                     ) : (
@@ -175,7 +188,7 @@ const SearchShowScount = () => {
                                             style={{ cursor: 'pointer' }}
                                         >
                                             <div 
-                                                className="card bg-light h-100" 
+                                                className="card bg-light" 
                                                 style={{ 
                                                     width: '100%', 
                                                     boxShadow: '1px 2px #a1a1a1', 
@@ -201,7 +214,12 @@ const SearchShowScount = () => {
                                                 </div>
                                                 <div 
                                                     className="card-body d-flex" 
-                                                    style={{ padding: '5px 10px', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'flex-start' }}
+                                                    style={{ 
+                                                        padding: '5px 10px', 
+                                                        flexDirection: 'row', 
+                                                        justifyContent: 'space-between', 
+                                                        alignItems: 'flex-start', 
+                                                    }}
                                                 > {/* justify top */}
                                                     <div style={{ display: 'flex', alignItems: 'flex-start', width: '100%' }}>
                                                         <h6 className="card-title" style={{ fontSize: '18px', margin: 0, flex: '1', textAlign: 'left', fontWeight: 'bold', color: 'black' }}>

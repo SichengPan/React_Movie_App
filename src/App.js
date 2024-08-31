@@ -1,6 +1,7 @@
 import 'bootstrap/dist/js/bootstrap.js';
 import 'bootswatch/dist/darkly/bootstrap.min.css';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import React, { useEffect } from 'react';
 import Header from "./components/Header";
 import MainPage from "./components/MainPage";
 import MoviesPortal from "./components/MoviesPortal";
@@ -15,7 +16,28 @@ import SearchEpisodePortal from './components/SearchEpisodePortal';
 
 
 function App() {
-  
+
+  useEffect(() => {
+    // 捕获全局 JavaScript 错误
+    const handleGlobalError = (event) => {
+      console.error('Global error captured:', event.error);
+    };
+    
+    // 捕获未处理的 Promise 拒绝
+    const handleUnhandledRejection = (event) => {
+      console.error('Unhandled promise rejection:', event.reason);
+    };
+
+    window.addEventListener('error', handleGlobalError);
+    window.addEventListener('unhandledrejection', handleUnhandledRejection);
+
+    // Cleanup the listeners on component unmount
+    return () => {
+      window.removeEventListener('error', handleGlobalError);
+      window.removeEventListener('unhandledrejection', handleUnhandledRejection);
+    };
+  }, []);
+
   return (
     <Router>
       <div className="d-flex flex-column min-vh-100"> {/* Ensure the app takes at least the full viewport height */}
