@@ -126,7 +126,7 @@ const SearchShowScount = () => {
                             Search for Movies and TV Shows
                         </div>
                         <div className="ml-auto"> {/* Watchlist on the right */}
-                            <a href="/watchlist" className="text-light">Watchlist</a> 
+                            <a href="/react_movie_app/watchlist" className="text-light">Watchlist</a> 
                         </div>
                     </div>
                 </div>

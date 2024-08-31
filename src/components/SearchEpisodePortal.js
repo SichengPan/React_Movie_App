@@ -123,7 +123,7 @@ const SearchEpisodePortal = () => {
                             Search for Episodes
                         </div>
                         <div className="ml-auto">
-                            <a href="/watchlist" className="text-light">Watchlist</a> 
+                            <a href="/react_movie_app/watchlist" className="text-light">Watchlist</a> 
                         </div>
                     </div>
                 </div>

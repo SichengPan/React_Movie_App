@@ -18,15 +18,15 @@ function Header() {
                         </li>
                         
                         <li className="nav-item mx-3">
-                            <Link to="/search" className="nav-link text-white fs-5">Search ShowScount</Link>
+                            <Link to="/react_movie_app/search" className="nav-link text-white fs-5">Search ShowScount</Link>
                         </li>
 
                         <li className="nav-item mx-3">
-                            <Link to="/series2" className="nav-link text-white fs-5">Search Series By Episode</Link>
+                            <Link to="/react_movie_app/series" className="nav-link text-white fs-5">Search Series By Episode</Link>
                         </li>
 
                         <li className="nav-item mx-3">
-                            <Link to="/watchlist" className="nav-link text-white fs-5">Watchlist</Link>
+                            <Link to="/react_movie_app/watchlist" className="nav-link text-white fs-5">Watchlist</Link>
                         </li>                        
                     </ul>
                 </div>

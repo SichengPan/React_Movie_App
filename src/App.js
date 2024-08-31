@@ -18,12 +18,10 @@ import SearchEpisodePortal from './components/SearchEpisodePortal';
 function App() {
 
   useEffect(() => {
-    // 捕获全局 JavaScript 错误
     const handleGlobalError = (event) => {
       console.error('Global error captured:', event.error);
     };
     
-    // 捕获未处理的 Promise 拒绝
     const handleUnhandledRejection = (event) => {
       console.error('Unhandled promise rejection:', event.reason);
     };
@@ -46,10 +44,10 @@ function App() {
         <div className="flex-grow-1"> {/* This div will take up remaining space between header and footer */}
           <Routes>
             <Route path="/react_movie_app" element={<MainPage />} />
-            <Route path="/search" element={<SearchShowScount />} />
-            <Route path="/series2" element={<SearchEpisodePortal />} />
-            <Route path="/content/:imdbID" element={<MovieDetailPage />} />
-            <Route path="/watchlist" element={<WatchlistPage />} />
+            <Route path="/react_movie_app/search" element={<SearchShowScount />} />
+            <Route path="/react_movie_app/series" element={<SearchEpisodePortal />} />
+            <Route path="/react_movie_app/content/:imdbID" element={<MovieDetailPage />} />
+            <Route path="/react_movie_app/watchlist" element={<WatchlistPage />} />
           </Routes>
         </div>
 

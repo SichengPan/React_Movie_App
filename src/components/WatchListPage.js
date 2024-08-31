@@ -32,7 +32,7 @@ const WatchlistPage = () => {
                     
                             {/* Search More */}
                             <div className="col-md-3 text-end">
-                                <a href="/search" className="text-light" style={{ textAlign: 'right' }}>Search More</a>
+                                <a href="/react_movie_app/search" className="text-light" style={{ textAlign: 'right' }}>Search More</a>
                             </div>
                         </div>
                     </div>
