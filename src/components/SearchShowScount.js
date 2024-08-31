@@ -163,7 +163,7 @@ const SearchShowScount = () => {
             
             {/* ErrorAlert aligned to top */}
             {error && (
-                <div className="container-fluid text-center d-flex justify-content-center align-items-start" style={{ backgroundColor: '#f5f5f5' }}>
+                <div className="container-fluid text-center d-flex justify-content-center align-items-start p-0" style={{ backgroundColor: '#f5f5f5' }}>
                     <div className="row justify-content-center w-100">
                         <ErrorAlert error={error} searchTerm={searchText} onClose={handleErrorAlertClose} />
                     </div>
