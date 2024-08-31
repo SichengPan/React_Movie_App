@@ -11,7 +11,7 @@ import Footer from './components/Footer';
 
 import SearchShowScount from './components/SearchShowScount';
 import MovieDetailPage from './components/MovieDetailPage';
-import WatchlistPage from './components/WatchlistPage'; 
+import WatchlistPage from './components/WatchListPage.js'; 
 import SearchEpisodePortal from './components/SearchEpisodePortal';
 
 
