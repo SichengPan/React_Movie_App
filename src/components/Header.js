@@ -14,19 +14,19 @@ function Header() {
                 <div className="collapse navbar-collapse justify-content-center" id="navbarNav">
                     <ul className="navbar-nav">
                         <li className="nav-item mx-3">
-                            <Link to="/react_movie_app" className="nav-link text-white fs-5">Home Page</Link>
+                            <Link to="/" className="nav-link text-white fs-5">Home Page</Link>
                         </li>
                         
                         <li className="nav-item mx-3">
-                            <Link to="/react_movie_app/search" className="nav-link text-white fs-5">Search ShowScount</Link>
+                            <Link to="/search" className="nav-link text-white fs-5">Search ShowScount</Link>
                         </li>
 
                         <li className="nav-item mx-3">
-                            <Link to="/react_movie_app/series" className="nav-link text-white fs-5">Search Series By Episode</Link>
+                            <Link to="/series" className="nav-link text-white fs-5">Search Series By Episode</Link>
                         </li>
 
                         <li className="nav-item mx-3">
-                            <Link to="/react_movie_app/watchlist" className="nav-link text-white fs-5">Watchlist</Link>
+                            <Link to="/watchlist" className="nav-link text-white fs-5">Watchlist</Link>
                         </li>                        
                     </ul>
                 </div>

@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { useNavigate } from 'react-router-dom'; 
+import { useNavigate, Link } from 'react-router-dom'; 
 import { displayWatchList } from '../watchlist_functions/WatchListOperations.js';
 
 
@@ -32,7 +32,7 @@ const WatchlistPage = () => {
                     
                             {/* Search More */}
                             <div className="col-md-3 text-end">
-                                <a href="/react_movie_app/search" className="text-light" style={{ textAlign: 'right' }}>Search More</a>
+                                <Link to="/search" className="text-light" style={{ textAlign: 'right' }}>Search More</Link>
                             </div>
                         </div>
                     </div>

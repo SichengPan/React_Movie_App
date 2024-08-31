@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { searchMoviesAndSeries } from '../api_functions/searchMoviesAndSeries.js';
 import ErrorAlert from './ErrorAlert';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { addToWatchList, removeFromWatchList } from '../watchlist_functions/WatchListOperations.js';
 
 import defaultPoster from '../pics/blank-movie-poster1.jpg';
@@ -126,7 +126,7 @@ const SearchShowScount = () => {
                             Search for Movies and TV Shows
                         </div>
                         <div className="ml-auto"> {/* Watchlist on the right */}
-                            <a href="/react_movie_app/watchlist" className="text-light">Watchlist</a> 
+                            <Link to="/watchlist" className="text-light">Watchlist</Link> 
                         </div>
                     </div>
                 </div>
